@@ -15,7 +15,7 @@ PACKAGE_VERSION="${2:-stub-universe}"
 
 FRAMEWORK_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FRAMEWORK_NAME=$(basename "${FRAMEWORK_DIRECTORY}")
-DCOS_COMMONS_DIRECTORY="$(cd "${FRAMEWORK_DIRECTORY}/../.." && pwd)"
+DCOS_COMMONS_DIRECTORY="$(cd "${FRAMEWORK_DIRECTORY}/../../dcos-commons" && pwd)"
 UNIVERSE_URL_PATH="${UNIVERSE_URL_PATH:-}"
 
 # Grab TEMPLATE_x vars for use in Universe template.
