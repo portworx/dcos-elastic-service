@@ -32,7 +32,7 @@ source "${FRAMEWORK_DIRECTORY}/versions.sh"
 # Build package with the SDK artifacts that were just built (SDK CLIs,
 # bootstrap.zip, scheduler.zip).
 "${DCOS_COMMONS_DIRECTORY}/tools/build_package.sh" \
-  "${FRAMEWORK_NAME}" \
+  portworx-elastic \
   "${FRAMEWORK_DIRECTORY}" \
   -a "${FRAMEWORK_DIRECTORY}/build/distributions/${FRAMEWORK_NAME}-scheduler.zip" \
   -a "${DCOS_COMMONS_DIRECTORY}/sdk/bootstrap/bootstrap.zip" \

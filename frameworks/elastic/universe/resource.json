@@ -3,7 +3,8 @@
     "uris": {
       "jre-tar-gz": "{{jre-url}}",
       "libmesos-bundle-tar-gz": "{{libmesos-bundle-url}}",
-      "bootstrap-zip": "{{artifact-dir}}/bootstrap.zip",
+      "bootstrap-zip": "https://s3-us-west-1.amazonaws.com/px-dcos/dcos-commons/artifacts/0.40.5-1.3.7/bootstrap.zip",
+      "executor-zip": "https://s3-us-west-1.amazonaws.com/px-dcos/dcos-commons/artifacts/0.40.5-1.3.7/executor.zip",
       "scheduler-zip": "{{artifact-dir}}/elastic-scheduler.zip",
       "statsd-plugin-zip": "https://downloads.mesosphere.com/elastic/assets/elasticsearch-statsd-{{elastic-statsd-version}}.zip",
       "elasticsearch-jre-tar-gz": "{{jre-url}}",
