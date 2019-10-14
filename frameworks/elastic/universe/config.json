@@ -8,7 +8,7 @@
         "name": {
           "description": "Unique name for the Elasticsearch service instance consisting of a series of words separated by slashes. Each word must be at least 1 alphanumeric character and may only contain digits (`0-9`), dashes (`-`), dots (`.`), and lowercase letters (`a-z`). The word may not begin or end with a dash",
           "type": "string",
-          "default": "elastic",
+          "default": "portworx-elastic",
           "pattern": "^(\\/?((\\.\\.)|(([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)*([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9]))?($|\\/))+$"
         },
         "user": {
@@ -46,6 +46,15 @@
           "description": "Labels to pass to the virtual network plugin. Comma-separated key:value pairs. For example: k_0:v_0,k_1:v_1,...,k_n:v_n",
           "type": "string",
           "default": ""
+        },
+        "mesos_api_version": {
+          "description": "Configures the Mesos API version to use. Possible values: V0 (non-HTTP), V1 (HTTP)",
+          "type": "string",
+          "enum": [
+            "V0",
+            "V1"
+          ],
+          "default": "V1"
         },
         "log_level": {
           "description": "The log level for the DC/OS service.",
@@ -175,10 +184,15 @@
           "type": "integer",
           "default": 2000
         },
-        "disk_type": {
-          "type": "string",
-          "description": "Disk type to be used for storing data. [ROOT, MOUNT]",
-          "default": "ROOT"
+        "portworx_volume_name":{
+          "description":"Portworx volume name",
+          "type":"string",
+          "default": "MasterNodeVolume"
+        },
+        "portworx_volume_options":{
+          "description":"Portworx volume options. Comma separated key=value pairs",
+          "type":"string",
+          "default": ""
         },
         "volume_profile": {
           "type": "string",
@@ -293,10 +307,15 @@
           "type": "integer",
           "default": 10000
         },
-        "disk_type": {
-          "type": "string",
-          "description": "Disk type to be used for storing data. [ROOT, MOUNT]",
-          "default": "ROOT"
+        "portworx_volume_name":{
+          "description":"Portworx volume name",
+          "type":"string",
+          "default": "DataNodeVolume"
+        },
+        "portworx_volume_options":{
+          "description":"Portworx volume options. Comma separated key=value pairs",
+          "type":"string",
+          "default": ""
         },
         "volume_profile": {
           "type": "string",
@@ -406,10 +425,15 @@
           "type": "integer",
           "default": 2000
         },
-        "disk_type": {
-          "type": "string",
-          "description": "Disk type to be used for storing data. [ROOT, MOUNT]",
-          "default": "ROOT"
+        "portworx_volume_name":{
+          "description":"Portworx volume name",
+          "type":"string",
+          "default": "IngestNodeVolume"
+        },
+        "portworx_volume_options":{
+          "description":"Portworx volume options. Comma separated key=value pairs",
+          "type":"string",
+          "default": ""
         },
         "volume_profile": {
           "type": "string",
@@ -519,10 +543,15 @@
           "type": "integer",
           "default": 1000
         },
-        "disk_type": {
-          "type": "string",
-          "description": "Disk type to be used for storing data. [ROOT, MOUNT]",
-          "default": "ROOT"
+        "portworx_volume_name":{
+          "description":"Portworx volume name",
+          "type":"string",
+          "default": "CoordinatorNodeVolume"
+        },
+        "portworx_volume_options":{
+          "description":"Portworx volume options. Comma separated key=value pairs",
+          "type":"string",
+          "default": ""
         },
         "volume_profile": {
           "type": "string",

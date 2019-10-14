@@ -4,7 +4,7 @@
   "mem": 1024,
   "instances": 1,
   "user": "{{service.user}}",
-  "cmd": "export LD_LIBRARY_PATH=$MESOS_SANDBOX/libmesos-bundle/lib:$LD_LIBRARY_PATH; export MESOS_NATIVE_JAVA_LIBRARY=$(ls $MESOS_SANDBOX/libmesos-bundle/lib/libmesos-*.so); export JAVA_HOME=$(ls -d $MESOS_SANDBOX/jdk*/); export JAVA_HOME=${JAVA_HOME%/}; export PATH=$(ls -d $JAVA_HOME/bin):$PATH && export JAVA_OPTS=\"-Xms256M -Xmx512M -XX:-HeapDumpOnOutOfMemoryError\" && ./bootstrap -resolve=false -template=false && ./elastic-scheduler/bin/elastic ./elastic-scheduler/svc.yml",
+  "cmd": "export LD_LIBRARY_PATH=$MESOS_SANDBOX/libmesos-bundle/lib:$LD_LIBRARY_PATH; export MESOS_NATIVE_JAVA_LIBRARY=$(ls $MESOS_SANDBOX/libmesos-bundle/lib/libmesos-*.so); export JAVA_HOME=$(ls -d $MESOS_SANDBOX/jdk*/jre/); export JAVA_HOME=${JAVA_HOME%/}; export PATH=$(ls -d $JAVA_HOME/bin):$PATH && export JAVA_OPTS=\"-Xms256M -Xmx512M -XX:-HeapDumpOnOutOfMemoryError\" && ./bootstrap -resolve=false -template=false && ./elastic-scheduler/bin/elastic ./elastic-scheduler/svc.yml",
   "labels": {
     "DCOS_COMMONS_API_VERSION": "v1",
     "DCOS_COMMONS_UNINSTALL": "true",
@@ -41,9 +41,12 @@
     "ELASTICSEARCH_URI" : "{{resource.assets.uris.elasticsearch-tar-gz}}",
     "ELASTICSEARCH_JAVA_URI" : "{{resource.assets.uris.elasticsearch-jre-tar-gz}}",
     "DIAGNOSTICS_URI" : "{{resource.assets.uris.diagnostics-zip}}",
-    "BOOTSTRAP_URI": "{{resource.assets.uris.bootstrap-zip}}",
     "JAVA_URI": "{{resource.assets.uris.jre-tar-gz}}",
+    "BOOTSTRAP_URI": "{{resource.assets.uris.bootstrap-zip}}",
+    "SCHEDULER_URI": "{{resource.assets.uris.scheduler-zip}}",
+    "EXECUTOR_URI": "{{resource.assets.uris.executor-zip}}",
     "LIBMESOS_URI": "{{resource.assets.uris.libmesos-bundle-tar-gz}}",
+    "MESOS_API_VERSION": "{{service.mesos_api_version}}",
     "FRAMEWORK_NAME": "{{service.name}}",
     "FRAMEWORK_USER": "{{service.user}}",
     "FRAMEWORK_PRINCIPAL": "{{service.service_account}}",
@@ -94,7 +97,8 @@
     "MASTER_NODE_PLACEMENT": "{{{master_nodes.placement}}}",
     "MASTER_NODE_HEAP_MB": "{{master_nodes.heap.size}}",
     "MASTER_NODE_DISK": "{{master_nodes.disk}}",
-    "MASTER_NODE_DISK_TYPE": "{{master_nodes.disk_type}}",
+    "MASTER_NODE_DOCKER_VOLUME_NAME": "{{{master_nodes.portworx_volume_name}}}",
+    "MASTER_NODE_DOCKER_DRIVER_OPTIONS": "{{{master_nodes.portworx_volume_options}}}",
     {{#master_nodes.volume_profile}}
     "MASTER_NODE_VOLUME_PROFILE": "{{master_nodes.volume_profile}}",
     {{/master_nodes.volume_profile}}
@@ -105,7 +109,8 @@
     "DATA_NODE_PLACEMENT": "{{{data_nodes.placement}}}",
     "DATA_NODE_HEAP_MB": "{{data_nodes.heap.size}}",
     "DATA_NODE_DISK": "{{data_nodes.disk}}",
-    "DATA_NODE_DISK_TYPE": "{{data_nodes.disk_type}}",
+    "DATA_NODE_DOCKER_VOLUME_NAME": "{{{data_nodes.portworx_volume_name}}}",
+    "DATA_NODE_DOCKER_DRIVER_OPTIONS": "{{{data_nodes.portworx_volume_options}}}",
     {{#data_nodes.volume_profile}}
     "DATA_NODE_VOLUME_PROFILE": "{{data_nodes.volume_profile}}",
     {{/data_nodes.volume_profile}}
@@ -115,7 +120,8 @@
     "INGEST_NODE_PLACEMENT": "{{{ingest_nodes.placement}}}",
     "INGEST_NODE_HEAP_MB": "{{ingest_nodes.heap.size}}",
     "INGEST_NODE_DISK": "{{ingest_nodes.disk}}",
-    "INGEST_NODE_DISK_TYPE": "{{ingest_nodes.disk_type}}",
+    "INGEST_NODE_DOCKER_VOLUME_NAME": "{{{ingest_nodes.portworx_volume_name}}}",
+    "INGEST_NODE_DOCKER_DRIVER_OPTIONS": "{{{ingest_nodes.portworx_volume_options}}}",
     {{#ingest_nodes.volume_profile}}
     "INGEST_NODE_VOLUME_PROFILE": "{{ingest_nodes.volume_profile}}",
     {{/ingest_nodes.volume_profile}}
@@ -125,7 +131,8 @@
     "COORDINATOR_NODE_PLACEMENT": "{{{coordinator_nodes.placement}}}",
     "COORDINATOR_NODE_HEAP_MB": "{{coordinator_nodes.heap.size}}",
     "COORDINATOR_NODE_DISK": "{{coordinator_nodes.disk}}",
-    "COORDINATOR_NODE_DISK_TYPE": "{{coordinator_nodes.disk_type}}",
+    "COORDINATOR_NODE_DOCKER_VOLUME_NAME": "{{{coordinator_nodes.portworx_volume_name}}}",
+    "COORDINATOR_NODE_DOCKER_DRIVER_OPTIONS": "{{{coordinator_nodes.portworx_volume_options}}}",
     {{#coordinator_nodes.volume_profile}}
     "COORDINATOR_NODE_VOLUME_PROFILE": "{{coordinator_nodes.volume_profile}}",
     {{/coordinator_nodes.volume_profile}}
@@ -521,7 +528,8 @@
     {
       "port": 0,
       "protocol": "tcp",
-      "name": "api"
+      "name": "api",
+      "labels": { "VIP_0": "/api.{{service.name}}:80" }
     }
   ],
   "check": {

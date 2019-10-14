@@ -60,7 +60,6 @@ public final class Main {
 
     return DefaultScheduler.newBuilder(serviceSpecGenerator.build(), schedulerConfig)
         .setCustomConfigValidators(Collections.singletonList(new ElasticZoneValidator()))
-        .setPlansFrom(rawServiceSpec)
-        .withSingleRegionConstraint();
+        .setPlansFrom(rawServiceSpec);
   }
 }

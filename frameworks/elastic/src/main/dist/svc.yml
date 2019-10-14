@@ -43,8 +43,11 @@ pods:
               port: 9300
         volume:
           path: "container-path"
-          type: {{MASTER_NODE_DISK_TYPE}}
+          type: DOCKER
           size: {{MASTER_NODE_DISK}}
+          docker_volume_driver: pxd
+          docker_volume_name: {{{MASTER_NODE_DOCKER_VOLUME_NAME}}}
+          docker_driver_options: {{{MASTER_NODE_DOCKER_DRIVER_OPTIONS}}}
           {{#MASTER_NODE_VOLUME_PROFILE}}
           profiles:
             - {{MASTER_NODE_VOLUME_PROFILE}}
@@ -52,7 +55,7 @@ pods:
         cmd: |
           set -ex
 
-          export JAVA_HOME=$(ls -d $MESOS_SANDBOX/jdk*/)
+          export JAVA_HOME=$(ls -d $MESOS_SANDBOX/jdk*/jre/)
 
           mkdir scripts
 
@@ -63,7 +66,7 @@ pods:
           ./scripts/java-dns-ttl.sh
           ./scripts/install-plugins.sh
           ./scripts/setup-java-policy.sh
-
+          sudo chown {{FRAMEWORK_USER}} $MESOS_SANDBOX/container-path -R
           exec ./elasticsearch-{{ELASTIC_VERSION}}/bin/elasticsearch
         env:
           NODE_HEAP_MB: {{MASTER_NODE_HEAP_MB}}
@@ -140,8 +143,11 @@ pods:
               port: 9300
         volume:
           path: "container-path"
-          type: {{DATA_NODE_DISK_TYPE}}
+          type: DOCKER
           size: {{DATA_NODE_DISK}}
+          docker_volume_driver: pxd
+          docker_volume_name: {{{DATA_NODE_DOCKER_VOLUME_NAME}}}
+          docker_driver_options: {{{DATA_NODE_DOCKER_DRIVER_OPTIONS}}}
           {{#DATA_NODE_VOLUME_PROFILE}}
           profiles:
             - {{DATA_NODE_VOLUME_PROFILE}}
@@ -149,7 +155,7 @@ pods:
         cmd: |
           set -ex
 
-          export JAVA_HOME=$(ls -d $MESOS_SANDBOX/jdk*/)
+          export JAVA_HOME=$(ls -d $MESOS_SANDBOX/jdk*/jre/)
 
           mkdir scripts
 
@@ -160,7 +166,7 @@ pods:
           ./scripts/java-dns-ttl.sh
           ./scripts/install-plugins.sh
           ./scripts/setup-java-policy.sh
-
+          sudo chown {{FRAMEWORK_USER}} $MESOS_SANDBOX/container-path -R
           exec ./elasticsearch-{{ELASTIC_VERSION}}/bin/elasticsearch
         env:
           NODE_HEAP_MB: {{DATA_NODE_HEAP_MB}}
@@ -235,8 +241,11 @@ pods:
               port: 9300
         volume:
           path: "container-path"
-          type: {{INGEST_NODE_DISK_TYPE}}
+          type: DOCKER
           size: {{INGEST_NODE_DISK}}
+          docker_volume_driver: pxd
+          docker_volume_name: {{{INGEST_NODE_DOCKER_VOLUME_NAME}}}
+          docker_driver_options: {{{INGEST_NODE_DOCKER_DRIVER_OPTIONS}}}
           {{#INGEST_NODE_VOLUME_PROFILE}}
           profiles:
             - {{INGEST_NODE_VOLUME_PROFILE}}
@@ -244,7 +253,7 @@ pods:
         cmd: |
           set -ex
 
-          export JAVA_HOME=$(ls -d $MESOS_SANDBOX/jdk*/)
+          export JAVA_HOME=$(ls -d $MESOS_SANDBOX/jdk*/jre/)
 
           mkdir scripts
 
@@ -255,7 +264,7 @@ pods:
           ./scripts/java-dns-ttl.sh
           ./scripts/install-plugins.sh
           ./scripts/setup-java-policy.sh
-
+          sudo chown {{FRAMEWORK_USER}} $MESOS_SANDBOX/container-path -R
           exec ./elasticsearch-{{ELASTIC_VERSION}}/bin/elasticsearch
         env:
           NODE_HEAP_MB: {{INGEST_NODE_HEAP_MB}}
@@ -331,8 +340,11 @@ pods:
               port: 9300
         volume:
           path: "container-path"
-          type: {{COORDINATOR_NODE_DISK_TYPE}}
+          type: DOCKER
           size: {{COORDINATOR_NODE_DISK}}
+          docker_volume_driver: pxd
+          docker_volume_name: {{{COORDINATOR_NODE_DOCKER_VOLUME_NAME}}}
+          docker_driver_options: {{{COORDINATOR_NODE_DOCKER_DRIVER_OPTIONS}}}
           {{#COORDINATOR_NODE_VOLUME_PROFILE}}
           profiles:
             - {{COORDINATOR_NODE_VOLUME_PROFILE}}
@@ -340,7 +352,7 @@ pods:
         cmd: |
           set -ex
 
-          export JAVA_HOME=$(ls -d $MESOS_SANDBOX/jdk*/)
+          export JAVA_HOME=$(ls -d $MESOS_SANDBOX/jdk*/jre/)
 
           mkdir scripts
 
@@ -351,7 +363,7 @@ pods:
           ./scripts/java-dns-ttl.sh
           ./scripts/install-plugins.sh
           ./scripts/setup-java-policy.sh
-
+          sudo chown {{FRAMEWORK_USER}} $MESOS_SANDBOX/container-path -R
           exec ./elasticsearch-{{ELASTIC_VERSION}}/bin/elasticsearch
         env:
           NODE_HEAP_MB: {{COORDINATOR_NODE_HEAP_MB}}

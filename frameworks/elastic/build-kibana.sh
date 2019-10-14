@@ -10,7 +10,7 @@ PACKAGE_VERSION="${2:-stub-universe}"
 
 FRAMEWORK_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FRAMEWORK_NAME="kibana"
-DCOS_COMMONS_DIRECTORY="$(cd "${FRAMEWORK_DIRECTORY}/../.." && pwd)"
+DCOS_COMMONS_DIRECTORY="$(cd "${FRAMEWORK_DIRECTORY}/../../dcos-commons" && pwd)"
 FRAMEWORK_UNIVERSE_DIRECTORY="${FRAMEWORK_UNIVERSE_DIRECTORY:=${FRAMEWORK_DIRECTORY}/universe-kibana}"
 
 # Grab TEMPLATE_x vars for use in universe template.
@@ -46,7 +46,6 @@ if [ -n "${PUBLISH_SCRIPT}" ]; then
 
   exec "${PUBLISH_SCRIPT}" \
        "${FRAMEWORK_NAME}" \
-       "${PACKAGE_VERSION}" \
        "${FRAMEWORK_UNIVERSE_DIRECTORY}" \
        "${FRAMEWORK_DIRECTORY}/kibana/init.sh" \
        "${FRAMEWORK_DIRECTORY}/kibana/nginx.conf.tmpl"
